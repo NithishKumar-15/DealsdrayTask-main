@@ -10,13 +10,17 @@ const Login = () => {
 
     const [message, setMessage] = useState();
 
-    useEffect(()=>{
-        localStorage.clear();
-    },[])
-
     //User State admin or employee
     const homePagaeState=useSelector(state=>state.homePageReducer);
     const dispatch=useDispatch();
+
+     
+    useEffect(()=>{
+        localStorage.clear();
+
+        //reset the homepage Reducer when home page is logout
+        dispatch({type:"resetHomePage"})
+    },[])
 
     const userName = useRef();
     const password = useRef();
@@ -50,7 +54,19 @@ const Login = () => {
                     setMessage("user not found invalid userName or password")
                 }
             }else{
+                const data={
+                    name:userName.current.value,
+                    password:password.current.value
+                }
 
+                const response=await instance.post("/employeeLogin",data);
+               if(response.data.message==="Login successful"){
+                localStorage.setItem("token",response.data.token);
+                dispatch({type:"addProfile",data:response.data.profileData});
+                navigate("/Home")
+               }else if(response.data.message==="password incorrect"||response.data.message==="user not found"){
+                setMessage("user not found invalid userName or password")
+               }
             }
 
         } else {
@@ -93,7 +109,7 @@ const Login = () => {
 
                     {message != "" && <label className="d-block text-center text-danger">{message}</label>}
 
-                    {homePagaeState.Admin.page ? <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Admin Login</a> : <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Employee Login</a>}
+                    {homePagaeState.Admin.page ? <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Employee Login</a> : <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Admin Login</a>}
                 </form>
                 
             </div>

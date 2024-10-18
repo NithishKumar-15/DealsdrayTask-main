@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const EmployeeHomePage = () => {
 
     const homePageReducer=useSelector(state=>state.homePageReducer);
-
+    const employeeProfilereducer=useSelector(state=>state.employeeProfilereducer)
 
     const dispatch=useDispatch();
      
@@ -15,9 +15,9 @@ const EmployeeHomePage = () => {
             <div className="d-flex justify-content-between p-3" style={{ backgroundColor: "rgb(222,234,246)", border: "1px solid black" }}>
                 <a style={{ cursor: "pointer" }} onClick={()=>dispatch({type:"empdashboard"})}>Home</a>
                 <a style={{ cursor: "pointer" }} onClick={()=>dispatch({type:"empChatRoom"})}>Chat Room</a>
-                <a style={{ cursor: "pointer" }} onClick={()=>dispatch({type:"empAssignTask"})}>Assigned Task</a>
+                <a style={{ cursor: "pointer" }} onClick={()=>dispatch({type:"empProfile"})}>Employee Profile</a>
                 <div>
-                    <a>{localStorage.getItem("userName")} - </a>
+                    <a>{employeeProfilereducer.f_Name} - </a>
                     <a style={{ cursor: "pointer" }} onClick={() => navigate("/")}>Logout</a>
                 </div>
             </div>
@@ -54,15 +54,18 @@ const EmployeeHomePage = () => {
             </div>
         </div> */}
 
-        {homePageReducer.Employee.content==='Assigned Task'  &&  <div className="w-50 mx-auto mt-5">
-                <h3>Tasks</h3>
+        {homePageReducer.Employee.content==='Employee Profile'  &&  <div className="w-50 mx-auto mt-5">
+                <h2 className="text-center">Profile</h2>
+                <img src={employeeProfilereducer.f_Image} alt="..." width={150} height={150} className="rounded-circle mx-auto d-block"></img>
                 <hr></hr>
-                <span style={{ fontSize: '20px' }} className="h6">Task Name : </span><span style={{ fontSize: '20px' }}>Nav</span>
-                <h5 className="mt-3">Description :</h5>
-                <p style={{textAlign:"justify"}}>Socket.IO is a library that enables real-time, two-way communication between a server and a client. It can be used for a variety of applications, including: Instant messaging, Multi-user collaboration, Real-time analytics, File sharing, and Notifications.
-                    How to use socket.io with Node.js – Node.js Socket.io ...
-                    Socket.IO works by establishing a connection between the client and the server using a WebSocket, HTTP long-polling, or WebTransport. The connection is then upgraded to the best available method, which is usually a WebSocket</p>
-            <button className="btn btn-secondary">Task Completed</button>
+                <span style={{ fontSize: '20px' }} className="h6">Name : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Name}</span><br></br><br></br>
+                <span style={{ fontSize: '20px' }} className="h6">Email : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Email}</span><br></br><br></br>
+                <span style={{ fontSize: '20px' }} className="h6">Mobile : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Mobile}</span><br></br><br></br>
+                <span style={{ fontSize: '20px' }} className="h6">Designation : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Designation}</span><br></br><br></br>
+                <span style={{ fontSize: '20px' }} className="h6">Gender : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Gender}</span><br></br><br></br>
+                <span style={{ fontSize: '20px' }} className="h6">Course : </span><span style={{ fontSize: '20px' }}>{employeeProfilereducer.f_Course}</span><br></br>
+
+
             <hr></hr>
             </div>}
         </>

@@ -61,11 +61,11 @@ const AdminHomePage = () => {
 
     const [errorMessage, setErrorMessage] = useState();
 
-    const[editEmp,setEditEmp]=useState({
-        f_Name:"",
-        f_Designation:"",
-        f_Email:"",
-        f_Mobile:"",
+    const [editEmp, setEditEmp] = useState({
+        f_Name: "",
+        f_Designation: "",
+        f_Email: "",
+        f_Mobile: "",
     });
 
 
@@ -166,21 +166,21 @@ const AdminHomePage = () => {
             dispatch({ type: "adminEditEmployee" })
             employeeDetailsState.forEach((val) => {
                 if (val.f_Id === id) {
-                    if(val.f_Gender==="Male"){
-                        stateDispatch({type:"Male"})
-                    }else{
-                        stateDispatch({type:"Female"})
+                    if (val.f_Gender === "Male") {
+                        stateDispatch({ type: "Male" })
+                    } else {
+                        stateDispatch({ type: "Female" })
                     }
 
-                    if(val.f_Course==="BCA")
-                    stateDispatch({type:"BCA"});
-                    else if(val.f_Course==="BSC")
-                    stateDispatch({type:"BSC"});
-                    else if(val.f_Course==="MCA")
-                    stateDispatch({type:"MCA"});
+                    if (val.f_Course === "BCA")
+                        stateDispatch({ type: "BCA" });
+                    else if (val.f_Course === "BSC")
+                        stateDispatch({ type: "BSC" });
+                    else if (val.f_Course === "MCA")
+                        stateDispatch({ type: "MCA" });
 
                     setImg(val.f_Image)
-                     setEditEmp(val)
+                    setEditEmp(val)
                 }
             })
         } catch (e) {
@@ -189,29 +189,29 @@ const AdminHomePage = () => {
     }
 
     //Function to edit data in redux store and backend
-    async function editEmployeeBackEnd(e){
+    async function editEmployeeBackEnd(e) {
         e.preventDefault();
-        try{
-            const data={
+        try {
+            const data = {
                 ...editEmp,
-                f_Gender:states.gender,
-                f_Course:states.course,
+                f_Gender: states.gender,
+                f_Course: states.course,
                 f_Image
             }
-            
-            const response=await instance.put("EditEmployeeDet",data);
-            if(response.data.message==="updated successfully"){
-                const editedData=employeeDetailsState.map((val)=>{
-                    if(val.f_Id===data.f_Id){
+
+            const response = await instance.put("EditEmployeeDet", data);
+            if (response.data.message === "updated successfully") {
+                const editedData = employeeDetailsState.map((val) => {
+                    if (val.f_Id === data.f_Id) {
                         return data
-                    }else{
+                    } else {
                         return val;
                     }
                 })
-                dispatch({type:"editedData",data:editedData})
-                dispatch({type:"adminEmployeeList"});
+                dispatch({ type: "editedData", data: editedData })
+                dispatch({ type: "adminEmployeeList" });
             }
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -229,7 +229,7 @@ const AdminHomePage = () => {
                         return val
                     }
                 })
-                dispatch({type:"deletData",data:deletedData})
+                dispatch({ type: "deletData", data: deletedData })
             }
         } catch (e) {
 
@@ -368,29 +368,30 @@ const AdminHomePage = () => {
             {/*----------- Creat Employee form End------------*/}
 
 
+            {/*----------- Edit Employee form Start------------*/}
             {homePageState.Admin.content === "Employee Edit" && <div className="w-50 ms-5 mt-5">
                 <form onSubmit={editEmployeeBackEnd}>
                     <div className="row w-100 mb-3">
                         <label className="col-3 form-label" htmlFor="editName">Name</label>
-                        <input type="text" className="col form-control" id="editName" value={editEmp.f_Name} onChange={(e)=>setEditEmp((prev)=>{return{...prev,f_Name:e.target.value}})}></input>
+                        <input type="text" className="col form-control" id="editName" value={editEmp.f_Name} onChange={(e) => setEditEmp((prev) => { return { ...prev, f_Name: e.target.value } })}></input>
                     </div>
 
                     <div className="row w-100 mb-3">
                         <label className="col-3 form-label" htmlFor="editEmail">Email</label>
-                        <input type="text" className="col form-control" id="editEmail" value={editEmp.f_Email} onChange={(e) => {validateEmail(e); setEditEmp((prev)=>{return{...prev,f_Email:e.target.value}})}}></input>
+                        <input type="text" className="col form-control" id="editEmail" value={editEmp.f_Email} onChange={(e) => { validateEmail(e); setEditEmp((prev) => { return { ...prev, f_Email: e.target.value } }) }}></input>
                         {emaivalidate === "Enter valid Email!" && <sapn className="text-center text-danger">{emaivalidate}</sapn>}
                         {emaivalidate === "Valid Email" && <label className="text-center text-success">{emaivalidate}</label>}
                     </div>
 
                     <div className="row w-100 mb-3">
                         <label className="col-3 form-label" htmlFor="editMobile">Mobile Number</label>
-                        <input type="number" className="col form-control" id="editMobile" value={editEmp.f_Mobile} onChange={(e)=>setEditEmp((prev)=>{return{...prev,f_Mobile:e.target.value}})}></input>
+                        <input type="number" className="col form-control" id="editMobile" value={editEmp.f_Mobile} onChange={(e) => setEditEmp((prev) => { return { ...prev, f_Mobile: e.target.value } })}></input>
                     </div>
 
                     <div className="row w-100 mb-3">
                         <label className="col-3 form-label" htmlFor="editDesignation">Designation</label>
 
-                        <select className="form-select col" aria-label="Default select example" id="editDesignation" value={editEmp.f_Designation} onChange={(e)=>setEditEmp((prev)=>{return{...prev,f_Designation:e.target.value}})}>
+                        <select className="form-select col" aria-label="Default select example" id="editDesignation" value={editEmp.f_Designation} onChange={(e) => setEditEmp((prev) => { return { ...prev, f_Designation: e.target.value } })}>
                             <option value="HR">HR</option>
                             <option value="Manager">Manager</option>
                             <option value="Sales">Sales</option>
@@ -468,7 +469,9 @@ const AdminHomePage = () => {
 
                 </form>
             </div>}
+            {/*----------- Edit Employee form End------------*/}
 
+            {/*-----------Employee List form Start------------*/}
             {homePageState.Admin.content === "Employee List" && <div className="container">
                 <table className="tabel" border={1}>
                     <thead style={{ backgroundColor: "rgb(189,214,238)" }}>
@@ -511,6 +514,7 @@ const AdminHomePage = () => {
                     </tbody>
                 </table>
             </div>}
+            {/*-----------Employee List form End------------*/}
 
 
         </>

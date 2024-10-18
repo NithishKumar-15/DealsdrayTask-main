@@ -86,14 +86,16 @@ const homePageReducer = (state = homePageState, action) => {
                     content: "Chat Room"
                 }
             }
-        case "empAssignTask":
+        case "empProfile":
             return {
                 ...state,
                 Employee: {
                     ...state.Employee,
-                    content: "Assigned Task"
+                    content: "Employee Profile"
                 }
             }
+        case "resetHomePage":
+            return homePageState    
 
         default:
             return state
