@@ -22,8 +22,6 @@ const HomePage = () => {
     return (
         <>
         {homePageState.Admin.page ? <AdminHomePage></AdminHomePage> :  <EmployeeHomePage homePageState={homePageState}></EmployeeHomePage>}
-        
-        {/* <EmployeeHomePage homePageState={homePageState}></EmployeeHomePage> */}
         </>
     )
 }

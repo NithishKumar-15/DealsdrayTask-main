@@ -53,6 +53,14 @@ const homePageReducer = (state = homePageState, action) => {
                     content: "Create Employee"
                 }
             }
+        case "adminEditEmployee":
+            return {
+                ...state,
+                Admin: {
+                    ...state.Admin,
+                    content: "Employee Edit"
+                }
+            }
         case "adminEmployeeList":
             return {
                 ...state,
