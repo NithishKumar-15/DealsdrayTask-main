@@ -71,8 +71,18 @@ const AdminHomePage = () => {
 
     useEffect(() => {
         async function getEmployeeDet() {
-            const response = await instance.get("http://localhost:4000/GetEmployeeDetails");
-            dispatch({ type: "setEmployeeDet", data: response.data.data })
+            const response = await instance.get("http://localhost:4000/GetEmployeeDetails",{
+                headers:{
+                    token:localStorage.getItem("token")
+                }
+            });
+            console.log(response.data)
+            if(response.data.message==="data get success"){
+                dispatch({ type: "setEmployeeDet", data: response.data.data })
+            }else if(response.data.message==="your unauthorized"){
+                navigate("/")
+            }
+            
         }
         getEmployeeDet();
     }, [])
@@ -130,11 +140,17 @@ const AdminHomePage = () => {
                     f_CreatedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
                 }
 
-                const response = await instance.post("/CreateEmployee", data);
+                const response = await instance.post("/CreateEmployee", data,{
+                    headers:{
+                        token:localStorage.getItem("token")
+                    }
+                });
                 if (response.data.message === "data added successfully") {
                     setErrorMessage("success");
                     stateDispatch({ type: "Reset" })
                     dispatch({ type: "addNewEmployeeDet", data })
+                }else if(response.data.message==="your unauthorized"){
+                    navigate("/")
                 } else {
                     console.log(response.data.message)
                 }
@@ -199,7 +215,11 @@ const AdminHomePage = () => {
                 f_Image
             }
 
-            const response = await instance.put("EditEmployeeDet", data);
+            const response = await instance.put("EditEmployeeDet", data,{
+                headers:{
+                    token:localStorage.getItem("token")
+                }
+            });
             if (response.data.message === "updated successfully") {
                 const editedData = employeeDetailsState.map((val) => {
                     if (val.f_Id === data.f_Id) {
@@ -220,7 +240,8 @@ const AdminHomePage = () => {
         try {
             const response = await instance.delete("/deleteEmp", {
                 headers: {
-                    id: id
+                    id: id,
+                    token:localStorage.getItem("token")
                 }
             });
             if (response.data.message === "data deleted success") {

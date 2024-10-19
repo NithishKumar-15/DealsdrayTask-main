@@ -1,15 +1,33 @@
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { io } from "socket.io-client"; 
 
 const EmployeeHomePage = () => {
-
+    const socket=io.connect("http://localhost:4000");
+   
     const homePageReducer=useSelector(state=>state.homePageReducer);
     const employeeProfilereducer=useSelector(state=>state.employeeProfilereducer)
+
+    const messageDiv=useRef();
+    const message=useRef();
 
     const dispatch=useDispatch();
      
     const navigate = useNavigate();
+
+    socket.on("message",(msg)=>{
+        const element=document.createElement("p");
+        element.innerHTML=msg;
+        messageDiv.current.appendChild(element);
+    })
+
+    function messageEmitFunction(){
+        socket.emit("message",`${employeeProfilereducer.f_Name} : ${message.current.value}`)
+        const element=document.createElement("p");
+        element.innerHTML=`you : ${message.current.value}`;
+        messageDiv.current.appendChild(element);
+    }
     return (
         <>
             <div className="d-flex justify-content-between p-3" style={{ backgroundColor: "rgb(222,234,246)", border: "1px solid black" }}>
@@ -24,35 +42,20 @@ const EmployeeHomePage = () => {
             <p style={{ backgroundColor: "yellow", fontSize: "25px" }}>{homePageReducer.Employee.content}</p>
 
             {homePageReducer.Employee.content==='DashBoard' && <h4 className="w-auto" style={{ textAlign:"center", marginTop: "200px" }}>Welcome To Employee Page</h4>}
-            {/* <h4 className="w-auto" style={{ textAlign:"center", marginTop: "200px" }}>Welcome To Employee Page</h4> */}
 
             {homePageReducer.Employee.content==='Chat Room'  && <div className="container mt-5" style={{height:"70vh"}}>
             <div className="row justify-content-center h-100">
          
             <div className="col-lg-5 h-100">
             <h4 className="text-center m-0" style={{backgroundColor: "yellow"}}>Welcome To Chat room</h4>
-                <div className="w-100 h-75" style={{backgroundColor: "rgb(222,234,246)"}}>
+                <div className="w-100 h-75 p-2" style={{backgroundColor: "rgb(222,234,246)",overflow:"scroll"}} ref={messageDiv}>
 
                 </div>
-                <input className="w-75" placeholder="Send Message"></input><button className="w-25">Send</button>
+                <input className="w-75" placeholder="Send Message" ref={message}></input><button className="w-25" onClick={messageEmitFunction}>Send</button>
             </div>
 
             </div>
         </div>}
-
-            {/* <div className="container mt-5" style={{height:"70vh"}}>
-            <div className="row justify-content-center h-100">
-         
-            <div className="col-lg-5 h-100">
-            <h4 className="text-center m-0" style={{backgroundColor: "yellow"}}>Welcome To Chat room</h4>
-                <div className="w-100 h-75" style={{backgroundColor: "rgb(222,234,246)"}}>
-
-                </div>
-                <input className="w-75" placeholder="Send Message"></input><button className="w-25">Send</button>
-            </div>
-
-            </div>
-        </div> */}
 
         {homePageReducer.Employee.content==='Employee Profile'  &&  <div className="w-50 mx-auto mt-5">
                 <h2 className="text-center">Profile</h2>
