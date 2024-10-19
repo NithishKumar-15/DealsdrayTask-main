@@ -7,17 +7,17 @@ import reduxStore from './ReduxStore/reduxStore'
 
 
 function Routing() {
-  
+
   return (
     <>
-    <Provider store={reduxStore}>
-     <BrowserRouter>
-     <Routes>
-      <Route path='/' element={<Login></Login>}></Route>
-      <Route path='/Home' element={<HomePage></HomePage>}></Route>
-     </Routes>
-     </BrowserRouter>
-     </Provider>
+      <Provider store={reduxStore}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Login></Login>}></Route>
+            <Route path='/Home' element={<HomePage></HomePage>}></Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </>
   )
 }

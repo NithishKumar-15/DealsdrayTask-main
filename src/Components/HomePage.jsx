@@ -9,21 +9,21 @@ import { useEffect } from "react";
 
 
 const HomePage = () => {
-    
-    const homePageState=useSelector(state=>state.homePageReducer);
 
-    const navigate=useNavigate();
+    const homePageState = useSelector(state => state.homePageReducer);
 
-    useEffect(()=>{
-        if(localStorage.getItem("token")===null){
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
             navigate("/")
         }
-    },[])
+    }, [])
 
 
     return (
         <>
-        {homePageState.Admin.page ? <AdminHomePage></AdminHomePage> :  <EmployeeHomePage homePageState={homePageState}></EmployeeHomePage>}
+            {homePageState.Admin.page ? <AdminHomePage></AdminHomePage> : <EmployeeHomePage homePageState={homePageState}></EmployeeHomePage>}
         </>
     )
 }

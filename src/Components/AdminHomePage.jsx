@@ -70,19 +70,21 @@ const AdminHomePage = () => {
 
 
     useEffect(() => {
+
+        //getting the employee details from the server
         async function getEmployeeDet() {
-            const response = await instance.get("http://localhost:4000/GetEmployeeDetails",{
-                headers:{
-                    token:localStorage.getItem("token")
+            const response = await instance.get("http://localhost:4000/GetEmployeeDetails", {
+                headers: {
+                    token: localStorage.getItem("token")
                 }
             });
             console.log(response.data)
-            if(response.data.message==="data get success"){
+            if (response.data.message === "data get success") {
                 dispatch({ type: "setEmployeeDet", data: response.data.data })
-            }else if(response.data.message==="your unauthorized"){
+            } else if (response.data.message === "your unauthorized") {
                 navigate("/")
             }
-            
+
         }
         getEmployeeDet();
     }, [])
@@ -102,6 +104,7 @@ const AdminHomePage = () => {
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         convertToBase64(file).then((result) => {
+            //After converting set the result in setImg state
             setImg(result);
         })
     }
@@ -120,7 +123,7 @@ const AdminHomePage = () => {
         })
     }
 
-    //
+    //Create employee function
     const createEmployee = async (e) => {
         e.preventDefault();
 
@@ -140,16 +143,16 @@ const AdminHomePage = () => {
                     f_CreatedDate: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
                 }
 
-                const response = await instance.post("/CreateEmployee", data,{
-                    headers:{
-                        token:localStorage.getItem("token")
+                const response = await instance.post("/CreateEmployee", data, {
+                    headers: {
+                        token: localStorage.getItem("token")
                     }
                 });
                 if (response.data.message === "data added successfully") {
                     setErrorMessage("success");
                     stateDispatch({ type: "Reset" })
                     dispatch({ type: "addNewEmployeeDet", data })
-                }else if(response.data.message==="your unauthorized"){
+                } else if (response.data.message === "your unauthorized") {
                     navigate("/")
                 } else {
                     console.log(response.data.message)
@@ -215,9 +218,9 @@ const AdminHomePage = () => {
                 f_Image
             }
 
-            const response = await instance.put("EditEmployeeDet", data,{
-                headers:{
-                    token:localStorage.getItem("token")
+            const response = await instance.put("EditEmployeeDet", data, {
+                headers: {
+                    token: localStorage.getItem("token")
                 }
             });
             if (response.data.message === "updated successfully") {
@@ -236,12 +239,13 @@ const AdminHomePage = () => {
         }
     }
 
+    //employee delete function 
     async function deletEmployee(id) {
         try {
             const response = await instance.delete("/deleteEmp", {
                 headers: {
                     id: id,
-                    token:localStorage.getItem("token")
+                    token: localStorage.getItem("token")
                 }
             });
             if (response.data.message === "data deleted success") {

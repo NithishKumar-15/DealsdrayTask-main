@@ -1,15 +1,15 @@
-const employeeProfileState={
+const employeeProfileState = {
 
 };
 
-const employeeProfilereducer=(state=employeeProfileState,action)=>{
-    switch(action.type){
+const employeeProfilereducer = (state = employeeProfileState, action) => {
+    switch (action.type) {
         case "addProfile":
-            return{
+            return {
                 ...action.data
             }
-        default: 
-        return state
+        default:
+            return state
     }
 }
 

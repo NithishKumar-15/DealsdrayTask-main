@@ -11,21 +11,21 @@ const Login = () => {
     const [message, setMessage] = useState();
 
     //User State admin or employee
-    const homePagaeState=useSelector(state=>state.homePageReducer);
-    const dispatch=useDispatch();
+    const homePagaeState = useSelector(state => state.homePageReducer);
+    const dispatch = useDispatch();
 
-     
-    useEffect(()=>{
+
+    useEffect(() => {
         localStorage.clear();
 
         //reset the homepage Reducer when home page is logout
-        dispatch({type:"resetHomePage"})
-    },[])
+        dispatch({ type: "resetHomePage" })
+    }, [])
 
     const userName = useRef();
     const password = useRef();
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     /*---------functions Start-------------*/
 
@@ -36,37 +36,37 @@ const Login = () => {
         if (message != null) {
             setMessage();
         }
-       
+
         if (userName.current.value != "" && password.current.value != "") {
-            if(homePagaeState.Admin.page){
-                const data={
-                    name:userName.current.value,
-                    password:password.current.value
-                }
-    
-                const response=await instance.post("/AdminLogin",data);
-    
-                if(response.data.message==="Login successful"){
-                    localStorage.setItem("token",response.data.token);
-                    localStorage.setItem("userName",userName.current.value);
-                    navigate("/Home")
-                }else if(response.data.message=="user not found"){
-                    setMessage("user not found invalid userName or password")
-                }
-            }else{
-                const data={
-                    name:userName.current.value,
-                    password:password.current.value
+            if (homePagaeState.Admin.page) {
+                const data = {
+                    name: userName.current.value,
+                    password: password.current.value
                 }
 
-                const response=await instance.post("/employeeLogin",data);
-               if(response.data.message==="Login successful"){
-                localStorage.setItem("token",response.data.token);
-                dispatch({type:"addProfile",data:response.data.profileData});
-                navigate("/Home")
-               }else if(response.data.message==="password incorrect"||response.data.message==="user not found"){
-                setMessage("user not found invalid userName or password")
-               }
+                const response = await instance.post("/AdminLogin", data);
+
+                if (response.data.message === "Login successful") {
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("userName", userName.current.value);
+                    navigate("/Home")
+                } else if (response.data.message == "user not found") {
+                    setMessage("user not found invalid userName or password")
+                }
+            } else {
+                const data = {
+                    name: userName.current.value,
+                    password: password.current.value
+                }
+
+                const response = await instance.post("/employeeLogin", data);
+                if (response.data.message === "Login successful") {
+                    localStorage.setItem("token", response.data.token);
+                    dispatch({ type: "addProfile", data: response.data.profileData });
+                    navigate("/Home")
+                } else if (response.data.message === "password incorrect" || response.data.message === "user not found") {
+                    setMessage("user not found invalid userName or password")
+                }
             }
 
         } else {
@@ -75,11 +75,13 @@ const Login = () => {
     }
 
     //Function to set user state for login
-    const setTheUserLogin=()=>{
-        if(homePagaeState.Admin.page){
-           dispatch({type:"pageSetEmp"})
-        }else{
-            dispatch({type:"pageSetAdmin"})
+    const setTheUserLogin = () => {
+        //If the user is admin set homePagaeState.Admin.page false
+        if (homePagaeState.Admin.page) {
+            dispatch({ type: "pageSetEmp" })
+        }//Else set homePagaeState.Admin.page true
+        else {
+            dispatch({ type: "pageSetAdmin" })
         }
     }
 
@@ -89,7 +91,7 @@ const Login = () => {
         <div className="container">
             <div className="w-50 border" style={{ marginTop: "200px", marginLeft: "300px" }}>
                 {homePagaeState.Admin.page ? <h3 style={{ backgroundColor: "yellow" }}>Admin Login</h3> : <h3 style={{ backgroundColor: "yellow" }}>Employee Login</h3>}
-                
+
                 <form className="p-3" onSubmit={loginFunction}>
                     <div className="row w-100">
                         <label className="col-3 form-label" htmlFor="formUserName">User Name</label>
@@ -109,9 +111,9 @@ const Login = () => {
 
                     {message != "" && <label className="d-block text-center text-danger">{message}</label>}
 
-                    {homePagaeState.Admin.page ? <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Employee Login</a> : <a className="d-block text-center" style={{cursor:"pointer"}} onClick={setTheUserLogin}>Admin Login</a>}
+                    {homePagaeState.Admin.page ? <a className="d-block text-center" style={{ cursor: "pointer" }} onClick={setTheUserLogin}>Employee Login</a> : <a className="d-block text-center" style={{ cursor: "pointer" }} onClick={setTheUserLogin}>Admin Login</a>}
                 </form>
-                
+
             </div>
         </div>
     )

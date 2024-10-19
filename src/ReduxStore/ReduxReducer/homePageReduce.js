@@ -95,7 +95,7 @@ const homePageReducer = (state = homePageState, action) => {
                 }
             }
         case "resetHomePage":
-            return homePageState    
+            return homePageState
 
         default:
             return state
