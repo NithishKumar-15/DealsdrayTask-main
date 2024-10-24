@@ -1,8 +1,8 @@
 # EMPLOYEE MANAGEMENT
 
 ## admin Credentials
-    *Admin User Name=`Nithish`
-    *Admin Password=`nk15`
+    1. Admin User Name=`Nithish`
+    2. Admin Password=`nk15`
     
  
 			
