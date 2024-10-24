@@ -2,9 +2,9 @@
 
 ## Admin Credentials
 ### Admin User Name
-	`Nithish`
+	Nithish
 ### Admin Password
-	`nk15`
+	nk15
     
  
 			
